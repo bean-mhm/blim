@@ -4,6 +4,10 @@
 
 blim is an experimental view transform I've been working on for a few months, hoping to produce relatively saturated, bright, and contrasty colors while avoiding clipping and unwanted hue skews. blim is by no means production-ready, nor is it based on physically accurate phenomena (no film emulation).
 
+## Eye Candy
+
+Here are a few comparisons between the native sRGB display format (OETF only, clipped between 0 and 1) and blim.
+
 ## Scripts
 
 The code is structured in the following way:
@@ -32,7 +36,9 @@ First, a few notes:
 
 If `main.py` runs successfully, you should see a file named `blim.spi3d` in the same directory. Alternatively, you can look up the latest LUT in the [releases](https://github.com/bean-mhm/blim/releases) section, which may be outdated relative to the current code in the repo.
 
-The LUT's expected input and output formats are mentioned in the LUT comments at end of the file, but they can also be seen in the code. Here's an example of the LUT comments (note that this might not match the latest version):
+The LUT's expected input and output formats are mentioned in the LUT comments at end of the file, but they can also be seen in the code.
+
+Here's an example of the LUT comments (note that this might not match the latest version):
 
 ```
 # -------------------------------------------------
@@ -86,7 +92,3 @@ displays:
 ```
 
 > `...` refers to the other view transforms in the config. `...` is generally used as a placeholder for the other parts of the code. I cannot believe I had to mention this, but someone was actually confused by it.
-
-## Eye Candy
-
-Here are a few comparisons between the native sRGB display format (OETF only, clipped between 0 and 1) and blim.
