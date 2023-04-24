@@ -2,6 +2,10 @@ import numpy as np
 import colour
 
 
+def lerp(a, b, t):
+    return a + t * (b - a)
+
+
 def safe_divide(a, b):
     if (b == 0.0):
         return 0.0
@@ -282,15 +286,31 @@ def rgb_perceptual_hue_shifts(inp):
     return blender_hsv_to_rgb(np.array([new_hue, hsv[1], hsv[2]]))
 
 
+def rgb_path_to_white_mask(inp_mag, min_exp, max_exp, mask_pow):
+    mask = np.log2(rgb_mag(inp_mag))
+    mask = map_range_clamp(mask, min_exp, max_exp, 0.0, 1.0)
+    mask = mask**mask_pow
+    
+    return mask
+
+
 white = np.array([1,1,1])
-def rgb_compress_highlights(inp, mono):
-    inp_reinhard = inp * (1.0 / (mono + 1.0))
+def rgb_compress_highlights(inp):
+    inp_mag = rgb_mag(inp)
     
-    white_mix = np.log2(mono + 1.0)
-    white_mix = map_range_smootherstep(white_mix, -0.7, 8.5, 0.0, 1.0)
-    white_mix = white_mix**1.7
+    # Reinhard
+    inp = inp * (1.0 / (inp_mag + 1.0))
     
-    return inp_reinhard + white_mix * (white - inp_reinhard)
+    white_mix = rgb_path_to_white_mask(inp_mag, -1.0, 8.0, 2.4)
+    inp = lerp(inp, white, white_mix)
+    
+    white_mix = rgb_path_to_white_mask(inp_mag, -1.0, 10.0, 4.0)
+    inp = lerp(inp, white, white_mix)
+    
+    white_mix = rgb_path_to_white_mask(inp_mag, 4.0, 7.2, 3.0)
+    inp = lerp(inp, white, white_mix)
+    
+    return inp
 
 
 cmfs = (
