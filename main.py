@@ -10,13 +10,10 @@ import colour
 import os
 import time
 
-from blim import apply_transform
+from blim import apply_transform, vt_name, vt_version
 
 
 # Parameters
-
-vt_name = 'blim'
-vt_version = '0.1.21-alpha'
 
 compress_lg2_min = -12
 compress_lg2_max = 5

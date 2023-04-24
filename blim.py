@@ -15,6 +15,10 @@ import joblib
 from utils import *
 
 
+vt_name = 'blim'
+vt_version = '0.1.21-alpha'
+
+
 # Transform a 3D LUT
 def apply_transform(table: np.ndarray, compress_lg2_min, compress_lg2_max, parallel):
     if len(table.shape) != 4:
