@@ -16,7 +16,7 @@ from utils import *
 
 
 vt_name = 'blim'
-vt_version = '0.1.21-alpha'
+vt_version = '0.2.0'
 
 
 # Transform a 3D LUT
@@ -135,7 +135,7 @@ def transform_rgb(inp):
     inp = rgb_perceptual_hue_shifts(inp)
     
     # Compress Highlights
-    inp = rgb_compress_highlights(inp, rgb_mag(inp))
+    inp = rgb_compress_highlights(inp)
     
     # Brighten and Clamp
     inp = np.clip(inp * 1.01, 0, 1)
@@ -143,7 +143,7 @@ def transform_rgb(inp):
     
     # Enhance Curve
     mono = rgb_mag_over_sqrt3(inp)
-    inp = inp * enhance_curve(mono, 1.01, 1.3, 0.7) / mono
+    inp = inp * enhance_curve(mono, 1.01, 1.5, 1.0) / mono
     
     # Clip and return
     return np.clip(inp, 0, 1)
