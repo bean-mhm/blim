@@ -107,7 +107,7 @@ def transform_rgb(inp):
 
         hue_red = 0.501,
         hue_yellow = 0.5,
-        hue_green = 0.496,
+        hue_green = 0.499,
         hue_cyan = 0.5,
         hue_blue = 0.499,
         hue_magenta = 0.502,
@@ -129,7 +129,7 @@ def transform_rgb(inp):
     
     # Hue Shifts
     inp = rgb_hue_shift(inp, np.array([1.0, -1.1, -1.3]), 0.05, 0.001, 0.0, 0.0)
-    inp = rgb_hue_shift(inp, np.array([-1.0, 1.0, -1.0]), 0.05, -0.005, 0.0, 0.0)
+    inp = rgb_hue_shift(inp, np.array([-1.0, 1.0, -1.0]), 0.05, -0.001, 0.0, 0.0)
     inp = rgb_hue_shift(inp, np.array([-1.0, -1.0, 1.0]), 0.01, -0.003, 0.0, -0.04)
     
     # Compress Highlights
