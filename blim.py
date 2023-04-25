@@ -19,7 +19,7 @@ from utils import *
 
 
 vt_name = 'blim'
-vt_version = '0.3.1'
+vt_version = '0.3.2'
 
 
 # Transform a 3D LUT
@@ -39,7 +39,7 @@ def apply_transform(table: np.ndarray, compress_lg2_min, compress_lg2_max, paral
     
     # Decompress: Exponent
     colour.algebra.set_spow_enable(True)
-    table = colour.algebra.spow(2.0, table)
+    table = np.power(2.0, table)
     
     # Decompress: Black Point
     offset = (2.0**compress_lg2_min)
@@ -52,13 +52,17 @@ def apply_transform(table: np.ndarray, compress_lg2_min, compress_lg2_max, paral
     pre_exposure = 1.0
     table *= 2**pre_exposure
     
-    # Apply transform on each RGB triplet
+    # Apply element-wise transform (calls transform_rgb)
     if parallel:
         print('Starting parallel element-wise transform...')
+        
         num_points = table.shape[0] * table.shape[1] * table.shape[2]
         stride_y = table.shape[0]
         stride_z = table.shape[0] * table.shape[1]
-        results = joblib.Parallel(n_jobs=8)(joblib.delayed(run_parallel)(table, (i % stride_y, (i % stride_z) // stride_y, i // stride_z)) for i in range(num_points))
+        
+        results = joblib.Parallel(n_jobs=8)(
+            joblib.delayed(run_parallel)(table, (i % stride_y, (i % stride_z) // stride_y, i // stride_z)) for i in range(num_points)
+        )
     
         # Arrange the results
         print('Arranging the results...')
@@ -99,7 +103,7 @@ def transform_rgb(inp):
     inp = inp * (mono**1.3) / mono
     
     # Color Filter
-    inp = rgb_monotone_in_Oklab(inp, np.array([1.0, 0.15, 0.01]), 0.015)
+    inp = rgb_monotone_in_Oklab(inp, np.array([1.0, 0.2, 0.01]), 0.01)
     
     # Selective HSV
     inp = rgb_selective_hsv(
@@ -141,7 +145,7 @@ def transform_rgb(inp):
     
     # Enhance Curve
     mono = rgb_mag_over_sqrt3(inp)
-    inp = inp * enhance_curve(mono, 1.01, 1.5, 0.6) / mono
+    inp = inp * enhance_curve(mono, shadow_pow = 1.01, highlight_pow = 1.5, mix_pow = 0.6) / mono
     
     # Clip and return
     return np.clip(inp, 0, 1)
