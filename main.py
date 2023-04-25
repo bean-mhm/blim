@@ -2,6 +2,9 @@
 
 3D LUT Generator for blim
 
+Repo:
+https://github.com/bean-mhm/blim
+
 """
 
 

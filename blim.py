@@ -5,6 +5,9 @@ blim - Bean's Unprofessional View Transform
 Input Color Space:   Linear BT.709 I-D65
 Output Color Space:  sRGB 2.2
 
+Repo:
+https://github.com/bean-mhm/blim
+
 """
 
 

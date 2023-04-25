@@ -1,3 +1,13 @@
+"""
+
+Helper functions for blim
+
+Repo:
+https://github.com/bean-mhm/blim
+
+"""
+
+
 import numpy as np
 import colour
 
