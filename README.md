@@ -2,11 +2,11 @@
 
 ## Introduction
 
-blim is an experimental view transform I've been working on for a few months, intended to produce relatively saturated, bright, and contrasty colors out of the box, while avoiding clipping and unwanted hue skews. blim is by no means production-ready, nor is it based on physically accurate phenomena (no film emulation).
+blim is an experimental view transform I've been working on for a few months, intended to produce relatively saturated, bright, and contrasty colors out of the box, while avoiding clipping and unwanted hue skews. blim is by no means production-ready, nor is it based on physically accurate phenomena (no film emulation for example).
 
 ## Eye Candy
 
-Here are a few comparisons between the native sRGB display format (OETF only, clipped between 0 and 1) and blim.
+This section is yet to be authored.
 
 ## Scripts
 
