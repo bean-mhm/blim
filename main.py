@@ -34,7 +34,7 @@ lut_comments = [
     '',
     'Output will be in sRGB 2.2.',
     '',
-    'GitHub:',
+    'Repo:',
     'https://github.com/bean-mhm/blim',
     '',
     'Read more:',
