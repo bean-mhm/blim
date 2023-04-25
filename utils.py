@@ -137,7 +137,7 @@ def blender_hue_sat(inp, hue, sat, value):
     return blender_hsv_to_rgb(hsv)
 
 
-def BT_709_I_D65_to_XYZ_I_D65(inp):
+def BT_709_to_XYZ(inp):
     mat = np.array([
         [ 0.4123908 ,  0.35758434,  0.18048079],
         [ 0.21263901,  0.71516868,  0.07219232],
@@ -146,7 +146,7 @@ def BT_709_I_D65_to_XYZ_I_D65(inp):
     return np.matmul(mat, inp)
 
 
-def XYZ_I_D65_to_BT_709_I_D65(inp):
+def XYZ_to_BT_709(inp):
     mat = np.array([
         [ 3.24096994, -1.53738318, -0.49861076],
         [-0.96924364,  1.8759675 ,  0.04155506],
@@ -155,8 +155,8 @@ def XYZ_I_D65_to_BT_709_I_D65(inp):
     return np.matmul(mat, inp)
 
 
-# https://bottosson.github.io/posts/oklab
-
+# Oklab implementation
+# See: https://bottosson.github.io/posts/oklab
 
 mat_Oklab_M1 = np.array([
     [ 0.8189330101,  0.3618667424, -0.1288597137],
@@ -172,9 +172,8 @@ mat_Oklab_M2 = np.array([
 ])
 mat_Oklab_M2_inv = np.linalg.inv(mat_Oklab_M2)
 
-
-def BT_709_I_D65_to_Oklab(inp):
-    inp = BT_709_I_D65_to_XYZ_I_D65(inp)
+def BT_709_to_Oklab(inp):
+    inp = BT_709_to_XYZ(inp)
 
     inp = np.matmul(mat_Oklab_M1, inp)
     
@@ -184,21 +183,21 @@ def BT_709_I_D65_to_Oklab(inp):
     
     return inp
 
-
-def Oklab_to_BT_709_I_D65(inp):
+def Oklab_to_BT_709(inp):
     inp = np.matmul(mat_Oklab_M2_inv, inp)
     
     inp = safe_pow(inp, 3.0)
     
     inp = np.matmul(mat_Oklab_M1_inv, inp)
     
-    inp = XYZ_I_D65_to_BT_709_I_D65(inp)
+    inp = XYZ_to_BT_709(inp)
     
     return inp
 
 
+luminance_BT_709_I_D65 = np.array([0.299, 0.587, 0.114])
 def rgb_lum(inp):
-    return inp[0] * 0.299 + inp[1] * 0.587 + inp[2] * 0.114
+    return np.dot(inp, luminance_BT_709_I_D65)
 
 
 def rgb_avg(inp):
@@ -255,8 +254,9 @@ def rgb_monotone(inp, col, amount):
 
 
 def rgb_monotone_in_Oklab(inp, col, amount):
-    inp = BT_709_I_D65_to_Oklab(inp)
-    col = BT_709_I_D65_to_Oklab(col)
+    # Convert to Oklab
+    inp = BT_709_to_Oklab(inp)
+    col = BT_709_to_Oklab(col)
     
     # Dot product
     dot = np.dot(inp / inp[0], col / col[0])
@@ -269,7 +269,8 @@ def rgb_monotone_in_Oklab(inp, col, amount):
     # Mix
     out = lerp(inp, out, amount)
     
-    out = Oklab_to_BT_709_I_D65(out)
+    # Convert from Oklab
+    out = Oklab_to_BT_709(out)
     out = np.maximum(out, 0.0)
     
     return out
@@ -330,18 +331,27 @@ def rgb_selective_hsv(
     return reds + yellows + greens + cyans + blues + magentas
 
 
+# Shift a certain tone as it gets logarithmically brighter
 def rgb_hue_shift(inp, channel, threshold, hue, sat, val):
+    # Only take more saturated colors into account
     sat_fac = rgb_sat(inp)**2
     sat_fac = map_range_clamp(sat_fac, 0.6, 1.0, 0.0, 1.0)
     
+    # See how much the input matches the channel
     mask = np.dot(channel, np.log2(inp + 1.0))
+    
+    # Saturation factor
     mask = max(0.0, mask * sat_fac)
+    
+    # Threshold
     mask = max(0.0, mask - threshold)
     
+    # Define HSV adjustments
     hue = mask * hue + 0.5
     sat = mask * sat + 1.0
     val = mask * val + 1.0
     
+    # HSV
     return blender_hue_sat(inp, hue, sat, val)
 
 
@@ -352,6 +362,7 @@ def fractional_hue_transform(inp, amount):
 
 magenta_mul_norm = np.array([1, -1, 1]) / rgb_mag(np.array([1, -1, 1]))
 blue = np.array([0, 0, 1])
+
 def rgb_perceptual_hue_shifts(inp):
     sat_mask = np.clip(rgb_sat(inp)**5.0 - 0.1, 0, 1)
     
@@ -379,26 +390,38 @@ def rgb_perceptual_hue_shifts(inp):
 
 def rgb_path_to_white_mask(inp_mag, min_exp, max_exp, mask_pow):
     mask = np.log2(inp_mag)
+    
     mask = map_range_clamp(mask, min_exp, max_exp, 0.0, 1.0)
+    
     mask = mask**mask_pow
     
     return mask
 
 
-white_Oklab = BT_709_I_D65_to_Oklab(np.array([1,1,1]))
+white_Oklab = BT_709_to_Oklab(np.array([1,1,1]))
+
+# Compress the highlights so that the output values fit into
+# the [0, 1] range.
 def rgb_compress_highlights(inp):
     inp_mag = rgb_mag(inp)
     
     # Path-to-white factors
-    white_mix_1 = rgb_path_to_white_mask(inp_mag, -1.0, 8.0, 1.5)
-    white_mix_2 = rgb_path_to_white_mask(inp_mag, -1.0, 10.0, 3.2)
-    white_mix_3 = rgb_path_to_white_mask(inp_mag, 4.0, 7.2, 2.0)
+    white_mix_1 = rgb_path_to_white_mask(inp_mag, min_exp = -1.0, max_exp =  8.0, mask_pow = 1.5)
+    white_mix_2 = rgb_path_to_white_mask(inp_mag, min_exp = -1.0, max_exp = 10.0, mask_pow = 3.2)
+    white_mix_3 = rgb_path_to_white_mask(inp_mag, min_exp =  4.0, max_exp =  7.2, mask_pow = 2.0)
     
     # Reinhard
     inp = inp * (1.0 / (inp_mag + 1.0))
     
+    # Note: The Reinhard transform uses the magnitude of the input
+    # and scales it uniformly. This might turn down bright colors
+    # extensively and make them look saturated, leading to uncanny
+    # results. That's why we mix with white based on the exposure.
+    # The mixing is done in Oklab to try to preserve the hue in a
+    # perceptual way, although it's just an approximation.
+    
     # Convert to Oklab
-    inp = BT_709_I_D65_to_Oklab(inp)
+    inp = BT_709_to_Oklab(inp)
     
     # Mix with white
     inp = lerp(inp, white_Oklab, white_mix_1)
@@ -406,7 +429,7 @@ def rgb_compress_highlights(inp):
     inp = lerp(inp, white_Oklab, white_mix_3)
     
     # Convert from Oklab
-    inp = Oklab_to_BT_709_I_D65(inp)
+    inp = Oklab_to_BT_709(inp)
     
     # Clip
     inp = np.clip(inp, 0, 1)
@@ -422,6 +445,7 @@ cmfs = (
 illuminant_d65_sd = colour.SDS_ILLUMINANTS["D65"].copy().align(cmfs.shape)
 illuminant_d65_sd.normalise()
 illuminant_d65_xy = colour.temperature.CCT_to_xy_CIE_D(6500.0 * 1.438776877 / 1.4380)
+
 def rgb_compress_highlights_spectral(inp, mono):
     inp_reinhard = inp * (1.0 / (mono + 1.0))
     
@@ -450,9 +474,11 @@ def rgb_compress_highlights_spectral(inp, mono):
     ) / 100.0
 
 
+# Adjust the highlights and the shadows in a smooth way.
+# Note: All arguments must be scalars.
 def enhance_curve(inp, shadow_pow, highlight_pow, mix_pow):
     a = inp**shadow_pow
     b = 1.0 - (1.0 - inp)**highlight_pow
     mix = inp**mix_pow
     
-    return a + mix * (b - a)
+    return lerp(a, b, mix)
