@@ -18,8 +18,10 @@ from blim import apply_transform, vt_name, vt_version
 
 # Parameters
 
+
 compress_lg2_min = -12
 compress_lg2_max = 5
+
 parallel_processing = True
 
 lut_dims = 65
