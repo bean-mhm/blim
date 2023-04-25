@@ -19,7 +19,7 @@ from utils import *
 
 
 vt_name = 'blim'
-vt_version = '0.3.0'
+vt_version = '0.3.1'
 
 
 # Transform a 3D LUT
