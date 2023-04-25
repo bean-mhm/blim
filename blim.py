@@ -16,7 +16,7 @@ from utils import *
 
 
 vt_name = 'blim'
-vt_version = '0.2.0'
+vt_version = '0.3.0'
 
 
 # Transform a 3D LUT
@@ -43,8 +43,6 @@ def apply_transform(table: np.ndarray, compress_lg2_min, compress_lg2_max, paral
     table -= offset
     
     # Eliminate negative values
-    # This is useless because there are no negative values
-    # left after compression.
     table = np.maximum(table, 0.0)
     
     # Pre-Exposure
@@ -53,7 +51,7 @@ def apply_transform(table: np.ndarray, compress_lg2_min, compress_lg2_max, paral
     
     # Apply transform on each RGB triplet
     if parallel:
-        print('Starting parallel transform...')
+        print('Starting parallel element-wise transform...')
         num_points = table.shape[0] * table.shape[1] * table.shape[2]
         stride_y = table.shape[0]
         stride_z = table.shape[0] * table.shape[1]
@@ -67,7 +65,7 @@ def apply_transform(table: np.ndarray, compress_lg2_min, compress_lg2_max, paral
                     index = x + (y * stride_y) + (z * stride_z)
                     table[x, y, z] = results[index]
     else:
-        print('Starting serial transform...')
+        print('Starting serial element-wise transform...')
         for z in range(table.shape[2]):
             for y in range(table.shape[1]):
                 print(f'at [0, {y}, {z}]')
@@ -98,7 +96,7 @@ def transform_rgb(inp):
     inp = inp * (mono**1.3) / mono
     
     # Color Filter
-    inp = rgb_monotone(inp, np.array([1.0, 0.2, 0.01]), 0.05)
+    inp = rgb_monotone_in_Oklab(inp, np.array([1.0, 0.15, 0.01]), 0.015)
     
     # Selective HSV
     inp = rgb_selective_hsv(
@@ -127,12 +125,9 @@ def transform_rgb(inp):
     )
     
     # Hue Shifts
-    inp = rgb_hue_shift(inp, np.array([1.0, -1.1, -1.3]), 0.05, 0.002, 0.0, 0.0)
-    inp = rgb_hue_shift(inp, np.array([-1.0, 1.0, -1.0]), 0.05, -0.006, 0.0, 0.0)
-    inp = rgb_hue_shift(inp, np.array([-1.0, -1.0, 1.0]), 0.01, -0.004, 0.0, -0.04)
-    
-    # Perceptual Hue Shifts
-    inp = rgb_perceptual_hue_shifts(inp)
+    inp = rgb_hue_shift(inp, np.array([1.0, -1.1, -1.3]), 0.05, 0.001, 0.0, 0.0)
+    inp = rgb_hue_shift(inp, np.array([-1.0, 1.0, -1.0]), 0.05, -0.005, 0.0, 0.0)
+    inp = rgb_hue_shift(inp, np.array([-1.0, -1.0, 1.0]), 0.01, -0.003, 0.0, -0.04)
     
     # Compress Highlights
     inp = rgb_compress_highlights(inp)
@@ -143,7 +138,7 @@ def transform_rgb(inp):
     
     # Enhance Curve
     mono = rgb_mag_over_sqrt3(inp)
-    inp = inp * enhance_curve(mono, 1.01, 1.5, 1.0) / mono
+    inp = inp * enhance_curve(mono, 1.01, 1.5, 0.6) / mono
     
     # Clip and return
     return np.clip(inp, 0, 1)
