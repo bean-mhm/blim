@@ -6,7 +6,7 @@ blim is an experimental view transform I've been working on for a few months, in
 
 ## Eye Candy
 
-This section is yet to be authored.
+See comparisons between blim and other view transforms in the [releases](https://github.com/bean-mhm/blim/releases) section.
 
 ## Scripts
 
