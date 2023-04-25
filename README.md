@@ -43,14 +43,14 @@ Here's an example of the LUT comments (note that this might not match the latest
 ```
 # -------------------------------------------------
 # 
-# blim v0.2.0 - Bean's Unprofessional View Transform
+# blim v0.3.0 - Bean's Unprofessional View Transform
 # 
 # LUT input is expected to be in Linear BT.709 I-D65 and gone through an AllocationTransform like the following:
 # !<AllocationTransform> {allocation: lg2, vars: [-12, 5, 0.000244140625]}
 # 
 # Output will be in sRGB 2.2.
 # 
-# GitHub:
+# Repo:
 # https://github.com/bean-mhm/blim
 # 
 # Read more:
