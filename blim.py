@@ -18,7 +18,6 @@ import joblib
 from utils import *
 
 
-vt_name = 'blim'
 vt_version = '0.4.0'
 
 

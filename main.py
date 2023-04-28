@@ -13,7 +13,7 @@ import colour
 import os
 import time
 
-from blim import apply_transform, vt_name, vt_version
+from blim import apply_transform, vt_version
 
 
 # Parameters
@@ -47,7 +47,6 @@ lut_comments = [
 
 
 # Print the parameters
-print(f'{vt_name = }')
 print(f'{vt_version = }')
 print(f'{compress_lg2_min = }')
 print(f'{compress_lg2_max = }')
@@ -63,7 +62,7 @@ t_start = time.time()
 print('Making a linear 3D LUT...')
 lut = colour.LUT3D(
     table = colour.LUT3D.linear_table(lut_dims),
-    name = vt_name,
+    name = 'blim',
     domain = np.array([[0, 0, 0], [1, 1, 1]]),
     size = lut_dims,
     comments = lut_comments
