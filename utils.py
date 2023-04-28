@@ -204,6 +204,10 @@ def rgb_avg(inp):
     return (inp[0] + inp[1] + inp[2]) / 3.0
 
 
+def rgb_sum(inp):
+    return inp[0] + inp[1] + inp[2]
+
+
 def rgb_max(inp):
     return max(max(inp[0], inp[1]), inp[2])
 
@@ -388,8 +392,8 @@ def rgb_perceptual_hue_shifts(inp):
     return blender_hsv_to_rgb(np.array([new_hue, hsv[1], hsv[2]]))
 
 
-def rgb_path_to_white_mask(inp_mag, min_exp, max_exp, mask_pow):
-    mask = np.log2(inp_mag)
+def rgb_path_to_white_mask(mono, min_exp, max_exp, mask_pow):
+    mask = np.log2(mono)
     
     mask = map_range_clamp(mask, min_exp, max_exp, 0.0, 1.0)
     
@@ -403,22 +407,24 @@ white_Oklab = BT_709_to_Oklab(np.array([1,1,1]))
 # Compress the highlights so that the output values fit into
 # the [0, 1] range.
 def rgb_compress_highlights(inp):
-    inp_mag = rgb_mag(inp)
+    inp_sum = rgb_sum(inp)
+    inp_avg = rgb_avg(inp)
+    inp_max = rgb_max(inp)
     
     # Path-to-white factors
-    white_mix_1 = rgb_path_to_white_mask(inp_mag, min_exp = -1.0, max_exp =  8.0, mask_pow = 1.5)
-    white_mix_2 = rgb_path_to_white_mask(inp_mag, min_exp = -1.0, max_exp = 10.0, mask_pow = 3.2)
-    white_mix_3 = rgb_path_to_white_mask(inp_mag, min_exp =  4.0, max_exp =  7.2, mask_pow = 2.0)
+    white_mix_1 = rgb_path_to_white_mask(inp_avg, min_exp = -3.0, max_exp = 7.0, mask_pow = 1.732)
+    white_mix_2 = rgb_path_to_white_mask(inp_avg, min_exp = -1.0, max_exp = 7.0, mask_pow = 4.0)
+    white_mix_3 = rgb_path_to_white_mask(inp_max, min_exp =  0.0, max_exp = 6.9, mask_pow = 2.0)
     
     # Reinhard
-    inp = inp * (1.0 / (inp_mag + 1.0))
+    inp = inp * (1.0 / (inp_sum + 1.0))
     
-    # Note: The Reinhard transform uses the magnitude of the input
-    # and scales it uniformly. This might turn down bright colors
-    # extensively and make them look saturated, leading to uncanny
-    # results. That's why we mix with white based on the exposure.
-    # The mixing is done in Oklab to try to preserve the hue in a
-    # perceptual way, although it's just an approximation.
+    # The Reinhard transform scales the input uniformly. This might
+    # turn down bright colors extensively and make them look
+    # saturated, leading to uncanny results. That's why we mix with
+    # white based on the exposure. The mixing is done in Oklab to
+    # try to preserve the hue in a perceptual way, although it's
+    # just an approximation.
     
     # Convert to Oklab
     inp = BT_709_to_Oklab(inp)
