@@ -131,9 +131,9 @@ def transform_rgb(inp):
     )
     
     # Hue Shifts
-    inp = rgb_hue_shift(inp, chnnel = np.array([1.0, -1.1, -1.3]), threshold = 0.05, hue =  0.001, sat = 0.0, val =  0.0)
-    inp = rgb_hue_shift(inp, chnnel = np.array([-1.0, 1.0, -1.0]), threshold = 0.05, hue = -0.001, sat = 0.0, val =  0.0)
-    inp = rgb_hue_shift(inp, chnnel = np.array([-1.0, -1.0, 1.0]), threshold = 0.01, hue = -0.003, sat = 0.0, val = -0.04)
+    inp = rgb_hue_shift(inp, channel = np.array([1.0, -1.1, -1.3]), threshold = 0.05, hue =  0.001, sat = 0.0, val =  0.0)
+    inp = rgb_hue_shift(inp, channel = np.array([-1.0, 1.0, -1.0]), threshold = 0.05, hue = -0.001, sat = 0.0, val =  0.0)
+    inp = rgb_hue_shift(inp, channel = np.array([-1.0, -1.0, 1.0]), threshold = 0.01, hue = -0.003, sat = 0.0, val = -0.04)
     
     # Compress Highlights
     inp = rgb_compress_highlights(inp)
