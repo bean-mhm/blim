@@ -19,7 +19,7 @@ from utils import *
 
 
 vt_name = 'blim'
-vt_version = '0.3.2'
+vt_version = '0.4.0'
 
 
 # Transform a 3D LUT
@@ -49,7 +49,7 @@ def apply_transform(table: np.ndarray, compress_lg2_min, compress_lg2_max, paral
     table = np.maximum(table, 0.0)
     
     # Pre-Exposure
-    pre_exposure = 1.0
+    pre_exposure = 1.1
     table *= 2**pre_exposure
     
     # Apply element-wise transform (calls transform_rgb)
@@ -99,11 +99,11 @@ def transform_rgb(inp):
         return inp
     
     # Power
-    mono = rgb_mag_over_sqrt3(inp)
-    inp = inp * (mono**1.3) / mono
+    mono = rgb_avg(inp)
+    inp = inp * (mono**1.333) / mono
     
     # Color Filter
-    inp = rgb_monotone_in_Oklab(inp, np.array([1.0, 0.2, 0.01]), 0.01)
+    inp = rgb_monotone_in_Oklab(inp, col = np.array([1.0, 0.2, 0.01]), amount = 0.01)
     
     # Selective HSV
     inp = rgb_selective_hsv(
@@ -132,20 +132,20 @@ def transform_rgb(inp):
     )
     
     # Hue Shifts
-    inp = rgb_hue_shift(inp, np.array([1.0, -1.1, -1.3]), 0.05, 0.001, 0.0, 0.0)
-    inp = rgb_hue_shift(inp, np.array([-1.0, 1.0, -1.0]), 0.05, -0.001, 0.0, 0.0)
-    inp = rgb_hue_shift(inp, np.array([-1.0, -1.0, 1.0]), 0.01, -0.003, 0.0, -0.04)
+    inp = rgb_hue_shift(inp, chnnel = np.array([1.0, -1.1, -1.3]), threshold = 0.05, hue =  0.001, sat = 0.0, val =  0.0)
+    inp = rgb_hue_shift(inp, chnnel = np.array([-1.0, 1.0, -1.0]), threshold = 0.05, hue = -0.001, sat = 0.0, val =  0.0)
+    inp = rgb_hue_shift(inp, chnnel = np.array([-1.0, -1.0, 1.0]), threshold = 0.01, hue = -0.003, sat = 0.0, val = -0.04)
     
     # Compress Highlights
     inp = rgb_compress_highlights(inp)
     
     # Brighten and Clamp
     inp = np.clip(inp * 1.01, 0, 1)
-    inp = blender_hue_sat(inp, 0.5, 1.01, 1.0)
+    inp = blender_hue_sat(inp, 0.5, 1.02, 1.0)
     
     # Enhance Curve
-    mono = rgb_mag_over_sqrt3(inp)
-    inp = inp * enhance_curve(mono, shadow_pow = 1.01, highlight_pow = 1.5, mix_pow = 0.6) / mono
+    mono = rgb_max(inp) ** 0.75
+    inp = inp * enhance_curve(mono, shadow_pow = 1.01, highlight_pow = 5.0, mix_pow = 1.5) / mono
     
     # Clip and return
     return np.clip(inp, 0, 1)
