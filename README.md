@@ -8,11 +8,11 @@ You can watch [this random video of mine](https://www.youtube.com/watch?v=Aym77w
 
 ## Eye Candy
 
-See comparisons between blim and other view transforms in the [releases](https://github.com/bean-mhm/blim/releases) section.
+- See comparisons between blim and other view transforms in the [releases](https://github.com/bean-mhm/blim/releases) section.
 
-You can find links to collections of example images in [Useful Links](#useful-links).
+- You can find links to collections of OpenEXR image files for testing in [Useful Links](#useful-links).
 
-Below are some example images gone through blim.
+- Below are some example images gone through blim v0.4.1.
 
 ![4 - SRIC_arri 01010 - blim](https://user-images.githubusercontent.com/98428255/236513642-ecb5a830-e65e-4aff-a6a9-86d6ee5b767a.jpg)
 
