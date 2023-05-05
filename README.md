@@ -1,20 +1,16 @@
-# blim - Bean's Unprofessional View Transform
+# 🔮 blim - Bean's Unprofessional View Transform
 
 ## Introduction
 
 blim is an experimental OpenColorIO view transform intended to produce relatively vibrant and contrasty colors out of the box, while avoiding clipping and unwanted hue skews. blim is by no means production-ready, nor is it based on film emulation, but it produces similar looks.
 
-You can watch [this random video of mine](https://www.youtube.com/watch?v=Aym77woq2NI) and read its description for more context. If you're *really* confused by all of this, you probably shouldn't be here.
+You can watch [this random video of mine](https://www.youtube.com/watch?v=Aym77woq2NI) and read its description for more context. If you're *really* confused by all of this, or you want to learn more, I highly recommend the blogs mentioned in [Useful Links](#useful-links).
 
 ## Eye Candy
 
 See comparisons between blim and other view transforms in the [releases](https://github.com/bean-mhm/blim/releases) section.
 
-Most of the example images can be found on these repos/websites:
-
-- https://github.com/sobotka/Testing_Imagery
-- https://github.com/sobotka/images
-- https://polyhaven.com/hdris
+You can find links to collections of example images in [Useful Links](#useful-links).
 
 Below are some example images gone through blim.
 
@@ -119,3 +115,13 @@ displays:
 ```
 
 > `...` refers to the other view transforms in the config. `...` is generally used as a placeholder for the other parts of the code. I cannot believe I had to mention this, but someone was actually confused by it.
+
+## Useful Links
+
+- [The Hitchhiker's Guide to Digital Colour - Troy Sobotka](https://hg2dc.com/)
+- [CG Cinematography - Christophe Brejon](https://chrisbrejon.com/cg-cinematography/)
+- [AgX Config Generator](https://github.com/sobotka/SB2383-Configuration-Generation)
+- [RealBloom, Physically Accurate Bloom Simulation - Me](https://github.com/bean-mhm/realbloom)
+- [Test Image Collection 1 - Troy Sobotka](https://github.com/sobotka/Testing_Imagery)
+- [Test Image Collection 2 - Troy Sobotka](https://github.com/sobotka/images)
+- [PolyHaven, HDRIs](https://polyhaven.com/hdris)
