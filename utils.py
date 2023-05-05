@@ -417,7 +417,7 @@ def rgb_compress_highlights(inp):
     white_mix_3 = rgb_path_to_white_mask(inp_max, min_exp =  0.0, max_exp = 6.9, mask_pow = 2.0)
     
     # Reinhard
-    inp = inp * (1.0 / (inp_sum + 1.0))
+    inp = inp / (inp_sum + 1.0)
     
     # The Reinhard transform scales the input uniformly. This might
     # turn down bright colors extensively and make them look

@@ -18,7 +18,7 @@ import joblib
 from utils import *
 
 
-vt_version = '0.4.0'
+vt_version = '0.4.1'
 
 
 # Transform a 3D LUT
