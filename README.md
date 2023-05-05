@@ -120,7 +120,7 @@ displays:
 
 - [The Hitchhiker's Guide to Digital Colour - Troy Sobotka](https://hg2dc.com/)
 - [CG Cinematography - Christophe Brejon](https://chrisbrejon.com/cg-cinematography/)
-- [AgX Config Generator](https://github.com/sobotka/SB2383-Configuration-Generation)
+- [AgX Config Generator - Troy Sobotka](https://github.com/sobotka/SB2383-Configuration-Generation)
 - [RealBloom, Physically Accurate Bloom Simulation - Me](https://github.com/bean-mhm/realbloom)
 - [Test Image Collection 1 - Troy Sobotka](https://github.com/sobotka/Testing_Imagery)
 - [Test Image Collection 2 - Troy Sobotka](https://github.com/sobotka/images)
