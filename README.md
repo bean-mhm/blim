@@ -2,11 +2,35 @@
 
 ## Introduction
 
-blim is an experimental view transform I've been working on for a few months, intended to produce relatively saturated, bright, and contrasty colors out of the box, while avoiding clipping and unwanted hue skews. blim is by no means production-ready, nor is it based on physically accurate phenomena (no film emulation for example).
+blim is an experimental OpenColorIO view transform intended to produce relatively vibrant and contrasty colors out of the box, while avoiding clipping and unwanted hue skews. blim is by no means production-ready, nor is it based on film emulation, but it produces similar looks.
+
+You can watch [this random video of mine](https://www.youtube.com/watch?v=Aym77woq2NI) and read its description for more context. If you're *really* confused by all of this, you probably shouldn't be here.
 
 ## Eye Candy
 
 See comparisons between blim and other view transforms in the [releases](https://github.com/bean-mhm/blim/releases) section.
+
+Most of the example images can be found on these repos/websites:
+
+- https://github.com/sobotka/Testing_Imagery
+- https://github.com/sobotka/images
+- https://polyhaven.com/hdris
+
+Below are some example images gone through blim.
+
+![4 - SRIC_arri 01010 - blim](https://user-images.githubusercontent.com/98428255/236513642-ecb5a830-e65e-4aff-a6a9-86d6ee5b767a.jpg)
+
+![7 - SRIC_arri 01014 - blim](https://user-images.githubusercontent.com/98428255/236513736-d0e10368-4bca-463d-b183-6eea9f9b1132.jpg)
+
+![10 - SRIC_arri_alexa35 01017 - blim](https://user-images.githubusercontent.com/98428255/236513892-6c98592e-e625-4dee-9020-79daf34f416e.jpg)
+
+![13 - SRIC_arri_alexa35 01033 - blim](https://user-images.githubusercontent.com/98428255/236514106-1ac6b228-f4e5-4ca6-af28-4c1da25067a3.jpg)
+
+![23 - SRIC_hdm-vmlab-hdr 01031 - blim](https://user-images.githubusercontent.com/98428255/236514133-dceaeb9e-1cdf-43a9-bba5-722080fe7841.jpg)
+
+![38 - studio_garden_4k - blim](https://user-images.githubusercontent.com/98428255/236514176-f206dda2-551c-4b96-93aa-a8e5f24e2501.jpg)
+
+![52 - out_sweep - blim](https://user-images.githubusercontent.com/98428255/236514186-5701ab07-7b8a-44e9-a618-23aa86b1fcc6.jpg)
 
 ## Scripts
 
