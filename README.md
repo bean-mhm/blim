@@ -6,7 +6,7 @@ blim is an experimental OpenColorIO view transform intended to produce relativel
 
 You can watch [this random video of mine](https://www.youtube.com/watch?v=Aym77woq2NI) and read its description for more context. If you're *really* confused by all of this, or you want to learn more, I highly recommend the blogs mentioned in [Useful Links](#useful-links).
 
-**[Check out flim my filmic transform](https://github.com/bean-mhm/flim)**
+- **[Check out flim my filmic transform](https://github.com/bean-mhm/flim)**
 
 ## Eye Candy
 
@@ -120,6 +120,7 @@ displays:
 
 ## Useful Links
 
+- [flim, Bean's Filmic Transform](https://github.com/bean-mhm/flim)
 - [The Hitchhiker's Guide to Digital Colour - Troy Sobotka](https://hg2dc.com/)
 - [CG Cinematography - Christophe Brejon](https://chrisbrejon.com/cg-cinematography/)
 - [AgX Config Generator - Troy Sobotka](https://github.com/sobotka/SB2383-Configuration-Generation)
