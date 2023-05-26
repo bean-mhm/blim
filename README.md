@@ -1,12 +1,12 @@
 # 🔮 blim - Bean's Unprofessional View Transform
 
+***Also see: [flim](https://github.com/bean-mhm/flim)***
+
 ## Introduction
 
 blim is an experimental OpenColorIO view transform intended to produce relatively vibrant and contrasty colors out of the box, while avoiding clipping and unwanted hue skews. blim is by no means production-ready, nor is it based on film emulation.
 
 You can watch [this random video of mine](https://www.youtube.com/watch?v=Aym77woq2NI) and read its description for more context. If you're *really* confused by all of this, or you want to learn more, I highly recommend the blogs mentioned in [Useful Links](#useful-links).
-
-- **[Check out flim my filmic transform](https://github.com/bean-mhm/flim)**
 
 ## Eye Candy
 
