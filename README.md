@@ -2,9 +2,11 @@
 
 ## Introduction
 
-blim is an experimental OpenColorIO view transform intended to produce relatively vibrant and contrasty colors out of the box, while avoiding clipping and unwanted hue skews. blim is by no means production-ready, nor is it based on film emulation, but it produces similar looks.
+blim is an experimental OpenColorIO view transform intended to produce relatively vibrant and contrasty colors out of the box, while avoiding clipping and unwanted hue skews. blim is by no means production-ready, nor is it based on film emulation.
 
 You can watch [this random video of mine](https://www.youtube.com/watch?v=Aym77woq2NI) and read its description for more context. If you're *really* confused by all of this, or you want to learn more, I highly recommend the blogs mentioned in [Useful Links](#useful-links).
+
+**[Check out flim my filmic transform](https://github.com/bean-mhm/flim)**
 
 ## Eye Candy
 
@@ -114,7 +116,7 @@ displays:
     ...
 ```
 
-> `...` refers to the other view transforms in the config. `...` is generally used as a placeholder for the other parts of the code. I cannot believe I had to mention this, but someone was actually confused by it.
+> `...` refers to the other view transforms in the config. `...` is generally used as a placeholder for the other parts of the code. I can't believe I had to mention this, but a friend was actually confused by it.
 
 ## Useful Links
 
